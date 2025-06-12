@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Edit User - Admin Dashboard{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin/admin-edit-user.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1 class="admin-title">✏️ Edit User</h1>
+        <p class="admin-subtitle">Modify user account information</p>
+    </div>
+    
+    <div class="breadcrumb">
+        <a href="{{ url_for('admin_dashboard') }}">🛡️ Admin Dashboard</a>
+        <span>→</span>
+        <strong>Edit User #{{ user.id }}</strong>
+    </div>
+    
+    <div class="current-user-info">
+        <h3>📋 Current User Information</h3>
+        <div class="user-info-grid">
+            <div class="user-info-item">
+                <strong>User ID:</strong>
+                #{{ user.id }}
+            </div>
+            <div class="user-info-item">
+                <strong>Email:</strong>
+                {{ user.email }}
+            </div>
+            <div class="user-info-item">
+                <strong>First Name:</strong>
+                {{ user.first_name }}
+            </div>
+            <div class="user-info-item">
+                <strong>Last Name:</strong>
+                {{ user.last_name }}
+            </div>
+            <div class="user-info-item">
+                <strong>Account Created:</strong>
+                {{ user.created_at[:10] if user.created_at else 'Unknown' }}
+            </div>
+        </div>
+    </div>
+    
+    {% if get_flashed_messages() %}
+    <div class="flash-messages">
+        {% for message in get_flashed_messages() %}
+        <div class="flash-message flash-error">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <div class="form-container">
+        <h2 class="form-title">📝 Update User Information</h2>
+          <form method="POST" class="user-form" autocomplete="off">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" autocomplete="off" required 
+                       value="{{ user.email }}" placeholder="user@example.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="first_name">First Name</label>
+                <input type="text" id="first_name" name="first_name" autocomplete="off" required 
+                       value="{{ user.first_name }}" placeholder="John">
+            </div>
+            
+            <div class="form-group">
+                <label for="last_name">Last Name</label>
+                <input type="text" id="last_name" name="last_name" autocomplete="off" required 
+                       value="{{ user.last_name }}" placeholder="Doe">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">New Password (Optional)</label>
+                <input type="password" id="password" name="password" 
+                       placeholder="Leave blank to keep current password">
+                <div class="password-note">
+                    💡 Leave password field empty to keep the current password
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn-admin btn-update">
+                    💾 Update User
+                </button>
+                <a href="{{ url_for('admin_dashboard') }}" class="btn-admin btn-cancel">
+                    ❌ Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

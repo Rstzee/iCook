@@ -1,0 +1,484 @@
+/* Admin Dashboard - Following iCook Design System */
+/* Consistent with project's main CSS structure */
+
+/* Use project's consistent color system */
+:root {
+    --cream: #F8F5E9;
+    --light-green: #9DC08B;
+    --dark-green: #3A7D44;
+    --orange: #DF6D14;
+    --white: #ffffff;
+    --shadow: rgba(58, 125, 68, 0.1);
+    --border-radius: 12px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Hide navbar for admin-only interface - consistent with project pattern */
+.navbar {
+    display: none !important;
+}
+
+/* Hide alert area - consistent with project pattern */
+.alert-area {
+    display: none !important;
+}
+
+/* Override base template main content - follow project's main-content pattern */
+.main-content {
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: linear-gradient(135deg, var(--cream) 0%, #f0ead6 100%) !important;
+    min-height: 100vh !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+}
+
+/* Admin container - following project's container patterns */
+.admin-container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--dark-green);
+    line-height: 1.6;
+}
+
+/* Header section - following project's panel styling with navbar gradient */
+.admin-header {
+    background: linear-gradient(135deg, var(--dark-green) 0%, var(--light-green) 100%);
+    color: white;
+    padding: 2.5rem 2rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+    text-align: center;
+    box-shadow: 0 8px 32px var(--shadow);
+    position: relative;
+    backdrop-filter: blur(10px);
+}
+
+.admin-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.1);
+    pointer-events: none;
+}
+
+.admin-title {
+    font-size: 2.5rem;
+    margin: 0 0 1rem 0;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.admin-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin: 0;
+    font-weight: 400;
+}
+
+/* Controls section - following project's grid layout patterns */
+.admin-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    gap: 2rem;
+}
+
+.admin-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    flex: 1;
+}
+
+/* Stat cards - following project's panel styling */
+.stat-card {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: 0 8px 32px var(--shadow);
+    border: 1px solid rgba(157, 192, 139, 0.2);
+    text-align: center;
+    transition: var(--transition);
+}
+
+.stat-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--dark-green);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--dark-green);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Action buttons section */
+.admin-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-width: 200px;
+}
+
+/* Button styling - following project's nav-link and button patterns */
+.btn-admin {
+    background: linear-gradient(135deg, var(--orange) 0%, #e67e22 100%);
+    color: white;
+    padding: 1rem 1.5rem;
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    transition: var(--transition);
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 8px 32px rgba(223, 109, 20, 0.2);
+    text-align: center;
+    font-size: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-admin::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-admin:hover {
+    background: linear-gradient(135deg, var(--dark-green) 0%, var(--light-green) 100%);
+    transform: translateY(-2px);
+    color: white;
+    text-decoration: none;
+    box-shadow: var(--shadow-hover);
+}
+
+.btn-admin:hover::before {
+    left: 100%;
+}
+
+.btn-logout {
+    background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+    color: white;
+    padding: 1rem 1.5rem;
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    transition: var(--transition);
+    text-align: center;
+    font-size: 1rem;
+    box-shadow: 0 8px 32px rgba(108, 117, 125, 0.2);
+}
+
+.btn-logout:hover {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: white;
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+/* Table container - following project's panel styling */
+.users-table-container {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: 0 8px 32px var(--shadow);
+    border: 1px solid rgba(157, 192, 139, 0.2);
+    transition: var(--transition);
+}
+
+.users-table-container:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+}
+
+.users-table-container h2 {
+    margin: 0 0 1.5rem 0;
+    color: var(--dark-green);
+    font-size: 1.5rem;
+    font-weight: 700;
+    border-bottom: 3px solid var(--light-green);
+    padding-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+/* Table styling - following project's consistent patterns */
+.users-table th,
+.users-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(157, 192, 139, 0.2);
+}
+
+.users-table th {
+    background: linear-gradient(135deg, var(--cream) 0%, #f0ead6 100%);
+    font-weight: 700;
+    color: var(--dark-green);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--light-green);
+}
+
+.users-table tbody tr {
+    transition: var(--transition);
+    background: var(--white);
+}
+
+.users-table tbody tr:nth-child(even) {
+    background: rgba(248, 245, 233, 0.3);
+}
+
+.users-table tbody tr:hover {
+    background: rgba(157, 192, 139, 0.1);
+    transform: translateX(5px);
+}
+
+.users-table td {
+    font-weight: 500;
+    color: #333;
+}
+
+.users-table td:first-child {
+    font-weight: 700;
+    color: var(--dark-green);
+}
+
+/* Action buttons - following project's form button patterns */
+.user-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.btn-action {
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: var(--transition);
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-action::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-action:hover::before {
+    left: 100%;
+}
+
+.btn-edit {
+    background: linear-gradient(135deg, var(--orange) 0%, #e67e22 100%);
+    color: white;
+    box-shadow: 0 4px 16px rgba(223, 109, 20, 0.2);
+}
+
+.btn-edit:hover {
+    background: linear-gradient(135deg, #e67e22 0%, var(--orange) 100%);
+    color: white;
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(223, 109, 20, 0.3);
+}
+
+.btn-ban {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: white;
+    box-shadow: 0 4px 16px rgba(220, 53, 69, 0.2);
+}
+
+.btn-ban:hover {
+    background: linear-gradient(135deg, #c82333 0%, #dc3545 100%);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(220, 53, 69, 0.3);
+}
+
+.btn-unban {
+    background: linear-gradient(135deg, var(--light-green) 0%, var(--dark-green) 100%);
+    color: white;
+    box-shadow: 0 4px 16px rgba(157, 192, 139, 0.2);
+}
+
+.btn-unban:hover {
+    background: linear-gradient(135deg, var(--dark-green) 0%, var(--light-green) 100%);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(157, 192, 139, 0.3);
+}
+
+.btn-delete {
+    background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+    color: white;
+    box-shadow: 0 4px 16px rgba(108, 117, 125, 0.2);
+}
+
+.btn-delete:hover {
+    background: linear-gradient(135deg, #495057 0%, #6c757d 100%);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(108, 117, 125, 0.3);
+}
+
+/* Status indicators - following project's badge patterns */
+.banned-indicator {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 16px rgba(220, 53, 69, 0.2);
+}
+
+.active-indicator {
+    background: linear-gradient(135deg, var(--light-green) 0%, var(--dark-green) 100%);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 16px rgba(157, 192, 139, 0.2);
+}
+
+/* Activity badges - following project's form styling */
+.user-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.3rem 0.6rem;
+    border-radius: var(--border-radius);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-align: center;
+    min-width: 40px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    transition: var(--transition);
+}
+
+.user-badge:hover {
+    transform: scale(1.05);
+}
+
+.badge-high {
+    background: linear-gradient(135deg, var(--light-green) 0%, var(--dark-green) 100%);
+    color: white;
+}
+
+.badge-medium {
+    background: linear-gradient(135deg, var(--orange) 0%, #e67e22 100%);
+    color: white;
+}
+
+.badge-low {
+    background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+    color: white;
+}
+
+/* Empty state */
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--dark-green);
+}
+
+.empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+/* Mobile responsiveness - following project's responsive patterns */
+@media (max-width: 768px) {
+    .admin-container {
+        padding: 1rem;
+    }
+    
+    .admin-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .admin-stats {
+        justify-content: center;
+    }
+    
+    .users-table-container {
+        padding: 1rem;
+        overflow-x: auto;
+    }
+    
+    .users-table {
+        font-size: 0.9rem;
+        min-width: 800px;
+    }
+    
+    .users-table th,
+    .users-table td {
+        padding: 0.5rem;
+    }
+    
+    .user-actions {
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+    
+    .btn-action {
+        width: 100%;
+        justify-content: center;
+    }
+}

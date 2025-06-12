@@ -1,0 +1,612 @@
+/* 
+ * iCook Interface - Clean Layout Implementation
+ * Layout: 20% Ingredients | 20% Conversations | 60% Chat
+ * Colors: Cream (#F8F5E9), Light Green (#9DC08B), Dark Green (#3A7D44), Orange (#DF6D14)
+ */
+
+/* CSS Variables */
+:root {
+  --cream: #F8F5E9;
+  --light-green: #9DC08B;
+  --dark-green: #3A7D44;
+  --orange: #DF6D14;
+  --white: #ffffff;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --border-radius: 8px;
+  --transition: all 0.3s ease;
+}
+
+/* Reset and ensure full-width layout */
+.main-content {
+  max-width: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 100% !important;
+  min-height: calc(100vh - 80px) !important; /* Match container height */
+  height: calc(100vh - 80px) !important; /* Prevent overflow */
+  overflow: hidden !important; /* Prevent page scrolling */
+}
+
+/* Main Container - 3-Panel Layout */
+.icook-container {
+  display: grid;
+  grid-template-columns: 20% 20% 60%;
+  height: calc(100vh - 80px); /* Account for navbar height */
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
+}
+
+/* ========== PANEL BASE STYLES ========== */
+.panel {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background: var(--white);
+  border-right: 1px solid #e0e0e0;
+  overflow: hidden;
+}
+
+.panel:last-child {
+  border-right: none;
+}
+
+.panel h3 {
+  margin: 0 0 25px 0;
+  padding: 10px 0 20px 0;
+  background: linear-gradient(135deg, var(--light-green) 0%, #7ca06b 100%);
+  background: -webkit-linear-gradient(135deg, var(--light-green) 0%, #7ca06b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: var(--light-green); /* Fallback for browsers that don't support background-clip */
+  border-radius: 0;
+  border-bottom: 2px solid var(--light-green);
+  box-shadow: 0 2px 0 0 rgba(157, 192, 139, 0.3);
+  font-size: 22px;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* ========== LEFT PANEL - INGREDIENTS (20%) ========== */
+.ingredients-panel {
+  background: linear-gradient(to bottom, var(--cream), #f0ead6);
+}
+
+/* Add/Edit Ingredient Forms */
+.add-ingredient-form,
+.edit-ingredient-form {
+  background: var(--white);
+  padding: 15px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+  border: 1px solid var(--light-green);
+}
+
+.edit-ingredient-form h4 {
+  margin: 0 0 15px 0;
+  color: var(--dark-green);
+  font-size: 14px;
+}
+
+.add-ingredient-form input,
+.add-ingredient-form select,
+.edit-ingredient-form input,
+.edit-ingredient-form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+  font-size: 14px;
+  transition: var(--transition);
+}
+
+.add-ingredient-form input:focus,
+.add-ingredient-form select:focus,
+.edit-ingredient-form input:focus,
+.edit-ingredient-form select:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 2px rgba(223, 109, 20, 0.2);
+}
+
+.add-ingredient-form button,
+.edit-ingredient-form .btn-update {
+  width: 100%;
+  padding: 12px;
+  background: var(--orange);
+  color: var(--white);
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.add-ingredient-form button:hover,
+.edit-ingredient-form .btn-update:hover {
+  background: #c55a0f;
+  transform: translateY(-1px);
+}
+
+.edit-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn-cancel {
+  flex: 1;
+  padding: 12px;
+  background: #666;
+  color: var(--white);
+  text-decoration: none;
+  border-radius: var(--border-radius);
+  text-align: center;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.btn-cancel:hover {
+  background: #555;
+  text-decoration: none;
+}
+
+/* Ingredients List */
+.ingredients-list {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.ingredient-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  margin-bottom: 8px;
+  background: var(--white);
+  border-radius: var(--border-radius);
+  border: 1px solid #e0e0e0;
+  transition: var(--transition);
+}
+
+.ingredient-item:hover {
+  border-color: var(--light-green);
+  box-shadow: var(--shadow);
+}
+
+.ingredient-info {
+  flex: 1;
+  color: var(--dark-green);
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.ingredient-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.edit-btn, .delete-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-weight: bold;
+  transition: var(--transition);
+}
+
+.edit-btn {
+  background: var(--light-green);
+  color: var(--white);
+}
+
+.edit-btn:hover {
+  background: #8bb77a;
+  text-decoration: none;
+}
+
+.delete-btn {
+  background: #e74c3c;
+  color: var(--white);
+}
+
+.delete-btn:hover {
+  background: #c0392b;
+  text-decoration: none;
+}
+
+/* ========== CENTER PANEL - CONVERSATIONS (20%) ========== */
+.history-panel {
+  background: linear-gradient(to bottom, #f8f8f8, #f0f0f0);
+}
+
+.history-list {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  background: var(--white);
+  border-radius: var(--border-radius);
+  border: 1px solid #e0e0e0;
+  transition: var(--transition);
+}
+
+.history-item:hover {
+  border-color: var(--light-green);
+  box-shadow: var(--shadow);
+}
+
+.conversation-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.conversation-title {
+  font-weight: 600;
+  color: var(--dark-green);
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.conversation-time {
+  font-size: 11px;
+  color: #666;
+}
+
+.delete-conversation-btn {
+  width: 30px;
+  height: 30px;
+  background: #e74c3c;
+  color: var(--white);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: bold;
+  margin-right: 8px;
+  transition: var(--transition);
+}
+
+.delete-conversation-btn:hover {
+  background: #c0392b;
+}
+
+/* ========== RIGHT PANEL - CHAT (60%) ========== */
+.chat-panel {
+  background: var(--cream);
+  padding-right: 0; /* No right padding to extend to edge */
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Ensure full height usage */
+}
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px; /* Reduced from 20px to 10px */
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-right: 20px; /* Add padding only to header content */
+  flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+.conversation-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  padding: 12px 20px;
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 14px;
+}
+
+.btn-small {
+  padding: 10px 18px;
+  font-size: 13px;
+}
+
+.btn-save {
+  background: var(--light-green);
+  color: var(--white);
+}
+
+.btn-save:hover {
+  background: #8bb77a;
+}
+
+.btn-danger {
+  background: #e74c3c;
+  color: var(--white);
+}
+
+.btn-danger:hover {
+  background: #c0392b;
+}
+
+/* Chat Messages Area */
+.chat-messages {
+  flex: 1; /* Take up all available space */
+  overflow-y: auto;
+  padding: 18px; /* Slightly reduced from 20px */
+  margin-right: 20px; /* Add right margin for spacing from edge */
+  background: var(--white);
+  border-radius: var(--border-radius);
+  border: 1px solid #e0e0e0;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+  min-height: 0; /* Allow flexbox to shrink if needed */
+}
+
+.message {
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  border-radius: var(--border-radius);
+  line-height: 1.5;
+}
+
+.user-message {
+  background: var(--orange);
+  color: var(--white);
+  margin-left: 40px;
+  border-radius: 20px 20px 5px 20px;
+}
+
+.ai-message {
+  background: #f8f9fa;
+  color: var(--dark-green);
+  margin-right: 40px;
+  border: 1px solid #e9ecef;
+  border-radius: 20px 20px 20px 5px;
+}
+
+.system-message {
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeaa7;
+  text-align: center;
+  font-style: italic;
+}
+
+.ai-response-content {
+  margin-top: 8px;
+}
+
+/* Chat Controls */
+.chat-controls {
+  padding: 15px; /* Reduced from 20px */
+  padding-right: 20px; /* Add right padding for controls */
+  background: var(--white);
+  border-radius: var(--border-radius);
+  margin-right: 20px; /* Add right margin */
+  border: 1px solid #e0e0e0;
+  margin-top: 10px; /* Reduced from 15px */
+  flex-shrink: 0; /* Prevent controls from shrinking */
+}
+
+.btn-recipe {
+  width: 100%;
+  background: var(--orange);
+  color: var(--white);
+  padding: 10px; /* Reduced from 12px */
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 12px; /* Reduced from 15px */
+  transition: var(--transition);
+}
+
+.btn-recipe:hover {
+  background: #c55a0f;
+  transform: translateY(-1px);
+}
+
+.chat-form {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.chat-form input[type="text"] {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+  font-size: 14px;
+  transition: var(--transition);
+}
+
+.chat-form input[type="text"]:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 2px rgba(223, 109, 20, 0.2);
+}
+
+.chat-form button {
+  padding: 12px 24px;
+  background: var(--dark-green);
+  color: var(--white);
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.chat-form button:hover {
+  background: #2d5c36;
+  transform: translateY(-1px);
+}
+
+/* Typing Indicator Animation */
+.typing-indicator {
+  opacity: 0.8;
+}
+
+.typing-dots {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.typing-dots span {
+  width: 8px;
+  height: 8px;
+  background: var(--light-green);
+  border-radius: 50%;
+  animation: typing 1.4s infinite ease-in-out;
+}
+
+.typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+.typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes typing {
+  0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+/* ========== RESPONSIVE DESIGN ========== */
+@media (max-width: 1200px) {
+  .icook-container {
+    grid-template-columns: 25% 25% 50%;
+  }
+}
+
+@media (max-width: 768px) {
+  .icook-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
+    height: calc(100vh - 80px); /* Maintain proper height on mobile */
+    min-height: calc(100vh - 80px);
+  }
+  
+  .main-content {
+    height: calc(100vh - 80px) !important;
+    min-height: calc(100vh - 80px) !important;
+  }
+  
+  .panel {
+    border-right: none;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .panel:last-child {
+    border-bottom: none;
+  }
+  
+  .chat-panel {
+    padding-right: 20px;
+  }
+  
+  .chat-messages,
+  .chat-controls {
+    margin-right: 0;
+  }
+  
+  .chat-header {
+    padding-right: 0;
+  }
+  
+  .chat-controls {
+    padding-right: 0;
+  }
+  
+  .conversation-controls {
+    justify-content: center;
+  }
+  
+  .chat-form {
+    flex-direction: column;
+  }
+  
+  .chat-form input[type="text"],
+  .chat-form button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .panel {
+    padding: 15px;
+  }
+  
+  .panel h3 {
+    padding: 12px 15px;
+    font-size: 14px;
+  }
+  
+  .add-ingredient-form,
+  .edit-ingredient-form {
+    padding: 12px;
+  }
+  
+  .chat-messages {
+    padding: 15px;
+  }
+  
+  .message {
+    padding: 10px 12px;
+    margin-bottom: 12px;
+  }
+  
+  .user-message {
+    margin-left: 20px;
+  }
+  
+  .ai-message {
+    margin-right: 20px;
+  }
+}
+
+/* ========== SCROLLBAR STYLING ========== */
+.ingredients-list::-webkit-scrollbar,
+.history-list::-webkit-scrollbar,
+.chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ingredients-list::-webkit-scrollbar-track,
+.history-list::-webkit-scrollbar-track,
+.chat-messages::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.ingredients-list::-webkit-scrollbar-thumb,
+.history-list::-webkit-scrollbar-thumb,
+.chat-messages::-webkit-scrollbar-thumb {
+  background: var(--light-green);
+  border-radius: 3px;
+}
+
+.ingredients-list::-webkit-scrollbar-thumb:hover,
+.history-list::-webkit-scrollbar-thumb:hover,
+.chat-messages::-webkit-scrollbar-thumb:hover {
+  background: #8bb77a;
+}

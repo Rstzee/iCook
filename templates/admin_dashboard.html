@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - iCook{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin/admin-dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1 class="admin-title">🛡️ Admin Dashboard</h1>
+        <p class="admin-subtitle">User Management & System Overview</p>
+    </div>
+    
+    <div class="admin-controls">
+        <div class="admin-stats">
+            <div class="stat-card">
+                <span class="stat-number">{{ users|length }}</span>
+                <div class="stat-label">Total Users</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">{{ users|sum(attribute='ingredient_count') }}</span>
+                <div class="stat-label">Ingredients</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">{{ users|sum(attribute='saved_conversations') }}</span>
+                <div class="stat-label">Conversations</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">{{ users|sum(attribute='chat_messages') }}</span>
+                <div class="stat-label">Chat Messages</div>
+            </div>
+        </div>
+        
+        <div class="admin-actions">
+            <a href="{{ url_for('admin_add_user') }}" class="btn-admin">
+                ➕ Add New User
+            </a>
+            <a href="{{ url_for('admin_logout') }}" class="btn-logout">
+                🚪 Logout
+            </a>
+        </div>
+    </div>
+    
+    <div class="users-table-container">
+        <h2>👥 User Management</h2>
+        
+        {% if users %}
+        <table class="users-table">            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Activity</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}                <tr>
+                    <td><strong>#{{ user.id }}</strong></td>
+                    <td>{{ user.first_name }} {{ user.last_name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                        {% if user.banned %}
+                            <span class="banned-indicator">🚫 BANNED</span>
+                        {% else %}
+                            <span class="active-indicator">✅ ACTIVE</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% set total_activity = user.ingredient_count + user.saved_conversations + user.chat_messages %}
+                        {% if total_activity > 50 %}
+                            <span class="user-badge badge-high">{{ total_activity }}</span>
+                        {% elif total_activity > 10 %}
+                            <span class="user-badge badge-medium">{{ total_activity }}</span>
+                        {% else %}
+                            <span class="user-badge badge-low">{{ total_activity }}</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ user.created_at[:10] if user.created_at else 'Unknown' }}</td>
+                    <td>
+                        <div class="user-actions">
+                            <a href="{{ url_for('admin_edit_user', user_id=user.id) }}" 
+                               class="btn-action btn-edit">✏️ Edit</a>                              {% if user.banned %}
+                                <form method="POST" action="{{ url_for('admin_ban_user', user_id=user.id) }}" 
+                                      style="display: inline;" autocomplete="off"
+                                      onsubmit="return confirm('Are you sure you want to unban {{ user.first_name }} {{ user.last_name }}? They will be able to log in again.')">
+                                    <button type="submit" class="btn-action btn-unban">✅ Unban</button>
+                                </form>
+                            {% else %}
+                                <form method="POST" action="{{ url_for('admin_ban_user', user_id=user.id) }}" 
+                                      style="display: inline;" autocomplete="off"
+                                      onsubmit="return confirm('Are you sure you want to ban {{ user.first_name }} {{ user.last_name }}? They will not be able to log in.')">
+                                    <button type="submit" class="btn-action btn-ban">🚫 Ban</button>
+                                </form>
+                            {% endif %}
+                              <form method="POST" action="{{ url_for('admin_delete_user', user_id=user.id) }}" 
+                                  style="display: inline;" autocomplete="off"
+                                  onsubmit="return confirm('Are you sure you want to delete user {{ user.first_name }} {{ user.last_name }}? This will permanently delete all their data including ingredients, conversations, and chat history.')">
+                                <button type="submit" class="btn-action btn-delete">🗑️ Delete</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">👤</div>
+            <h3>No Users Found</h3>
+            <p>No users are registered in the system yet.</p>
+            <a href="{{ url_for('admin_add_user') }}" class="btn-admin">Add First User</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+/* Fix for base layout issues */
+/* Ensure all page containers work with flexbox layout */
+
+/* Override any conflicting styles in child pages */
+.main-content > * {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Ensure landing page container works */
+.landing-container {
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+}
+
+/* Ensure login/registration containers work */
+.login-container,
+.registration-container {
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Ensure admin containers work */
+.admin-login-container,
+.admin-container,
+.admin-dashboard-container {
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
+}
+
+/* Fix any overflow issues */
+html, body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}

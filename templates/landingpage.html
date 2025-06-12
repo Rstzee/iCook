@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}iCook - Welcome{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/landingpage.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="landing-container">
+    <div class="guest-chat-section">
+        <h2>Try iCook! (Guest Mode)</h2>
+        <p>Ask recipe questions or get cooking advice without signing up!</p>
+        
+        <div class="chat-container">
+            <div class="chat-messages" id="guestChatMessages">
+                <div class="message ai-message">
+                    <strong>iCook:</strong> Hello! I'm your personal cooking assistant. Ask me about recipes, cooking techniques, ingredient substitutions, or any cooking questions you have!
+                </div>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% if message.startswith('You asked:') %}
+                                <div class="message user-message">
+                                    <strong>You:</strong> {{ message[10:] }}
+                                </div>
+                            {% elif message.startswith('iCook:') %}
+                                <div class="message ai-message">
+                                    <strong>iCook:</strong> 
+                                    <div class="ai-response-content">{{ message[6:]|safe }}</div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+            
+            <form class="chat-form" method="POST" action="{{ url_for('guest_chat') }}" autocomplete="off">
+                <input type="text" name="query" placeholder="Ask about recipes, ingredients, or cooking tips..." autocomplete="off" required>
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="hero-section">
+        <h1>🧑‍🍳 Welcome to iCook</h1>
+        <p>Your AI-powered cooking companion</p>
+        <div class="auth-buttons">
+            <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
+            <a href="{{ url_for('register') }}" class="btn btn-secondary">Register</a>
+        </div>
+    </div>
+    
+    <!-- Camouflaged Admin Button -->
+    <a href="{{ url_for('admin_login') }}" class="hidden-admin-btn" title="Admin Access">ADMINISTRATOR</a>
+</div>
+{% endblock %}

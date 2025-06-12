@@ -1,0 +1,274 @@
+/* Complete CSS reset and fresh start */
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box !important;
+}
+
+/* Color variables */
+:root {
+    --cream: #F8F5E9;
+    --light-green: #9DC08B;
+    --dark-green: #3A7D44;
+    --orange: #DF6D14;
+}
+
+/* Hide all base template elements */
+.navbar {
+    display: none !important;
+}
+
+/* Override base template alert area */
+.alert-area {
+    display: none !important;
+}
+
+/* Main content container - full screen centered */
+.main-content {
+    width: 100vw !important;
+    height: 100vh !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+    background: var(--cream) !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
+/* Admin container */
+.admin-container {
+    width: 95%;
+    max-width: 800px;
+    margin: 0;
+    padding: 2rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+/* Header styling */
+.admin-header {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    margin-bottom: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border: 2px solid var(--light-green);
+}
+
+.admin-title {
+    color: var(--dark-green);
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin: 0 0 0.5rem 0;
+}
+
+.admin-subtitle {
+    color: var(--orange);
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+/* Current user info */
+.current-user-info {
+    background: var(--light-green);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.current-user-info h3 {
+    color: var(--dark-green);
+    margin: 0 0 1rem 0;
+    font-size: 1.3rem;
+}
+
+.user-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    text-align: left;
+}
+
+.user-info-item {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.user-info-item strong {
+    color: var(--dark-green);
+    display: block;
+    margin-bottom: 0.3rem;
+}
+
+/* Form container */
+.form-container {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border: 2px solid var(--light-green);
+    flex-grow: 1;
+}
+
+.form-title {
+    color: var(--dark-green);
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0 0 2rem 0;
+    text-align: center;
+}
+
+/* Form styling */
+.user-form {
+    display: grid;
+    gap: 1.5rem;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    color: var(--dark-green);
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+.form-group input {
+    padding: 0.9rem;
+    border: 2px solid var(--light-green);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s;
+    background: var(--cream);
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--orange);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(223, 109, 20, 0.1);
+}
+
+/* Button styling */
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.btn-admin {
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-update {
+    background: var(--orange);
+    color: white;
+}
+
+.btn-update:hover {
+    background: var(--dark-green);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(58, 125, 68, 0.3);
+}
+
+.btn-cancel {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-cancel:hover {
+    background: #5a6268;
+    color: white;
+    text-decoration: none;
+    transform: translateY(-2px);
+}
+
+/* Flash messages */
+.flash-messages {
+    margin-bottom: 2rem;
+}
+
+.flash-message {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.flash-error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.flash-success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* Navigation breadcrumb */
+.breadcrumb {
+    background: var(--light-green);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.breadcrumb a {
+    color: var(--dark-green);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.breadcrumb a:hover {
+    color: var(--orange);
+}
+
+.breadcrumb span {
+    color: var(--dark-green);
+    margin: 0 0.5rem;
+}
+
+/* Password note */
+.password-note {
+    background: var(--cream);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--dark-green);
+    text-align: center;
+    font-style: italic;
+}

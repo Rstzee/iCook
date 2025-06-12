@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Cache control meta tags to prevent form auto-fill on back navigation -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>{% block title %}iCook - AI Integrated Cookbook{% endblock %}</title>
+    {% block styles %}{% endblock %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout-fix.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('landing_page') }}" class="nav-title-link">
+                <h1 class="nav-title">🧑‍🍳 iCook</h1>
+            </a>
+            
+            <div class="nav-menu">
+                <div class="nav-links">
+                    
+                    {% if session.user_id %}
+                        <!-- User navigation items can be added here -->
+                    {% else %}
+                        <a href="{{ url_for('landing_page') }}" class="nav-link">Home</a>
+                        <a href="{{ url_for('login') }}" class="nav-link">Login</a>
+                        <a href="{{ url_for('register') }}" class="nav-link">Register</a>
+                    {% endif %}
+                </div>
+                
+                {% if session.user_id %}
+                <div class="nav-user">
+                    <span>Welcome, {{ session.user_name }}!</span>
+                    <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Alert Area for Flash Messages -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="alert-area">
+                {% for message in messages %}
+                    {% if not message.startswith('You asked:') and not message.startswith('iCook:') and not message.startswith('Generated recipe') and not message.startswith('Loaded conversation:') %}
+                        <div class="alert alert-success">
+                            <span class="alert-content">{{ message }}</span>
+                            <span class="alert-instruction">⏳ Auto-dismiss</span>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <style>
+        :root {
+            --cream: #F8F5E9;
+            --light-green: #9DC08B;
+            --dark-green: #3A7D44;
+            --orange: #DF6D14;
+            --border-radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--cream) 0%, #f0ead6 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--dark-green) 0%, var(--light-green) 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            pointer-events: none;
+        }
+
+        .nav-container {
+            width: 100%;
+            margin: 0;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-title-link {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        .nav-title-link:hover {
+            text-decoration: none;
+            color: inherit;
+            transform: scale(1.05);
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 0.7rem 1.2rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            text-decoration: none;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-link:hover::before {
+            left: 100%;
+        }
+        
+        .admin-link {
+            background: rgba(223, 109, 20, 0.3) !important;
+            border: 1px solid rgba(223, 109, 20, 0.5);
+        }
+        
+        .admin-link:hover {
+            background: rgba(223, 109, 20, 0.5) !important;
+            border-color: rgba(223, 109, 20, 0.7);
+        }
+
+        .nav-user {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: white;
+            font-weight: 500;
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, var(--orange) 0%, #c55a0d 100%);
+            color: white;
+            padding: 0.7rem 1.2rem;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+        }
+
+        .logout-btn:hover {
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(223, 109, 20, 0.3);
+        }
+
+        .main-content {
+            flex: 1;
+            width: 100%;
+            min-height: calc(100vh - 80px);
+            overflow-x: hidden;
+        }
+
+        /* Alert Area Styles */
+        .alert-area {
+            position: fixed;
+            top: 90px;
+            right: 20px;
+            z-index: 1000;
+            max-width: 380px;
+            width: auto;
+        }
+
+        .alert {
+            background: rgba(157, 192, 139, 0.95);
+            color: var(--dark-green);
+            padding: 1.2rem;
+            border: 1px solid rgba(157, 192, 139, 0.3);
+            border-radius: var(--border-radius);
+            margin-bottom: 0.7rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            animation: slideInRight 0.3s ease-out, fadeOutAndHide 1s ease-in 1s forwards;
+            position: relative;
+            word-wrap: break-word;
+            backdrop-filter: blur(10px);
+            border-left: 4px solid var(--light-green);
+        }
+
+        .alert-success {
+            background: rgba(157, 192, 139, 0.95);
+            color: var(--dark-green);
+            border-color: rgba(157, 192, 139, 0.3);
+            border-left-color: var(--light-green);
+        }
+
+        .alert-info {
+            background: rgba(248, 245, 233, 0.95);
+            color: var(--dark-green);
+            border-color: rgba(248, 245, 233, 0.3);
+            border-left-color: var(--orange);
+        }
+
+        .alert-warning {
+            background: rgba(223, 109, 20, 0.1);
+            color: #8b4513;
+            border-color: rgba(223, 109, 20, 0.3);
+            border-left-color: var(--orange);
+        }
+
+        .alert-error {
+            background: rgba(220, 53, 69, 0.1);
+            color: #721c24;
+            border-color: rgba(220, 53, 69, 0.3);
+            border-left-color: #dc3545;
+        }
+
+        .alert-content {
+            flex: 1;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        .alert-instruction {
+            font-size: 0.75em;
+            opacity: 0.7;
+            font-style: italic;
+            margin-left: 10px;
+            flex-shrink: 0;
+            font-weight: 400;
+        }
+
+        /* CSS-only dismissible alerts using checkbox trick */
+        .alert input[type="checkbox"] {
+            display: none;
+        }
+
+        .alert input[type="checkbox"]:checked + .alert-content {
+            display: none;
+        }
+
+        .alert input[type="checkbox"]:checked ~ .alert-close {
+            display: none;
+        }
+
+        .alert input[type="checkbox"]:checked {
+            display: none;
+        }
+
+        .alert:has(input[type="checkbox"]:checked) {
+            display: none;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOutAndHide {
+            0% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            80% {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(100px);
+                display: none;
+                visibility: hidden;
+            }
+        }
+
+        /* Responsive alert positioning and navigation */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+            
+            .nav-title {
+                font-size: 1.5rem;
+            }
+            
+            .nav-menu {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .nav-links {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            
+            .nav-link {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .nav-user {
+                justify-content: center;
+                text-align: center;
+            }
+            
+            .alert-area {
+                top: 120px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 0 0.5rem;
+            }
+            
+            .nav-title {
+                font-size: 1.3rem;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .nav-link {
+                width: 100%;
+                text-align: center;
+                padding: 0.75rem;
+            }
+        }
+    </style>
+    
+    {% block scripts %}{% endblock %}
+
+</body>
+</html>

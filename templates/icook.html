@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+
+{% block title %}iCook - Your Kitchen{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/icook.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="icook-container">
+    <!-- Left Panel - Ingredients (20%) -->
+    <div class="panel ingredients-panel">
+        <h3>🧂 My Ingredients</h3>
+        
+        {% if edit_ingredient %}
+        <!-- Edit Ingredient Form -->
+        <form class="edit-ingredient-form" method="POST" action="{{ url_for('edit_ingredient', ingredient_id=edit_ingredient.id) }}" autocomplete="off">
+            <h4>✏️ Edit Ingredient</h4>
+            <input type="text" name="name" value="{{ edit_ingredient.name }}" placeholder="Ingredient name" autocomplete="off" required>
+            <input type="number" name="quantity" step="0.1" min="0.1" value="{{ edit_ingredient.quantity }}" placeholder="Quantity" autocomplete="off" required>
+            <select name="unit" required>
+                <option value="">Select unit</option>
+                <option value="kg" {% if edit_ingredient.unit == 'kg' %}selected{% endif %}>kg</option>
+                <option value="g" {% if edit_ingredient.unit == 'g' %}selected{% endif %}>g</option>
+                <option value="ml" {% if edit_ingredient.unit == 'ml' %}selected{% endif %}>ml</option>
+                <option value="liter" {% if edit_ingredient.unit == 'liter' %}selected{% endif %}>liter</option>
+                <option value="cups" {% if edit_ingredient.unit == 'cups' %}selected{% endif %}>cups</option>
+                <option value="tbsp" {% if edit_ingredient.unit == 'tbsp' %}selected{% endif %}>tbsp</option>
+                <option value="tsp" {% if edit_ingredient.unit == 'tsp' %}selected{% endif %}>tsp</option>
+                <option value="pieces" {% if edit_ingredient.unit == 'pieces' %}selected{% endif %}>pieces</option>
+            </select>
+            <div class="edit-buttons">
+                <button type="submit" class="btn-update">Update</button>
+                <a href="{{ url_for('icook') }}" class="btn-cancel">Cancel</a>
+            </div>
+        </form>
+        {% else %}
+        <!-- Add Ingredient Form -->
+        <form class="add-ingredient-form" method="POST" action="{{ url_for('add_ingredient') }}" autocomplete="off">
+            <input type="text" name="name" placeholder="Ingredient name" autocomplete="off" required>
+            <input type="number" name="quantity" step="0.1" min="0.1" placeholder="Quantity" autocomplete="off" required>
+            <select name="unit" required>
+                <option value="">Select unit</option>
+                <option value="kg">kg</option>
+                <option value="g">g</option>
+                <option value="ml">ml</option>
+                <option value="liter">liter</option>
+                <option value="cups">cups</option>
+                <option value="tbsp">tbsp</option>
+                <option value="tsp">tsp</option>
+                <option value="pieces">pieces</option>
+            </select>
+            <button type="submit">Add</button>
+        </form>
+        {% endif %}
+        
+        <div class="ingredients-list">
+            {% for ingredient in ingredients %}
+            <div class="ingredient-item">
+                <span class="ingredient-info">
+                    {{ ingredient.quantity }} {{ ingredient.unit }} {{ ingredient.name }}
+                </span>
+                <div class="ingredient-actions">
+                    <a href="{{ url_for('edit_ingredient', ingredient_id=ingredient.id) }}" 
+                       class="edit-btn" title="Edit ingredient">✏️</a>
+                    <a href="{{ url_for('delete_ingredient', ingredient_id=ingredient.id) }}" 
+                       class="delete-btn" title="Delete ingredient">×</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- Center Panel - Saved Conversations (20%) -->
+    <div class="panel history-panel">
+        <h3>🗂️ Saved Conversations</h3>
+        
+        <div class="history-list">
+            {% for conversation in saved_conversations %}
+            <div class="history-item">
+                <form method="POST" action="{{ url_for('load_conversation') }}" style="display: inline;">
+                    <input type="hidden" name="conversation_id" value="{{ conversation.id }}">
+                    <button type="submit" class="conversation-btn">
+                        <div class="conversation-title">{{ conversation.title[:40] }}...</div>
+                        <div class="conversation-time">{{ format_timestamp(conversation.timestamp) }}</div>
+                    </button>
+                </form>
+                <form method="POST" action="{{ url_for('delete_saved_conversation') }}" style="display: inline; margin-left: 5px;">
+                    <input type="hidden" name="conversation_id" value="{{ conversation.id }}">
+                    <button type="submit" class="delete-conversation-btn">×</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Right Panel - AI Chatbot (60%) -->
+    <div class="panel chat-panel">
+        <div class="chat-header">
+            <h3>💬 Ask iCook!</h3>
+            <div class="conversation-controls">
+                <form method="POST" action="{{ url_for('save_conversation') }}" style="display: inline;">
+                    <button type="submit" class="btn btn-small btn-save">💾 Save Conversation</button>
+                </form>
+                <form method="POST" action="{{ url_for('clear_current_chat') }}" style="display: inline; margin-left: 10px;">
+                    <button type="submit" class="btn btn-small btn-danger">🗑️ Delete Conversation</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <div class="message ai-message">
+                <strong>iCook:</strong> Hello! I'm your personal cooking assistant. Ask me about recipes, cooking techniques, or click "Generate Recipe" to create something with your ingredients!
+            </div>
+            
+            <!-- Display persistent chat messages from database -->
+            {% for message in current_chat_messages %}
+                {% if message.message_type == 'user' %}
+                    <div class="message user-message">
+                        <strong>You:</strong> {{ message.content }}
+                    </div>
+                {% elif message.message_type == 'ai' %}
+                    <div class="message ai-message">
+                        <strong>iCook:</strong> 
+                        <div class="ai-response-content">{{ message.content|safe }}</div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            
+            <!-- Still show system messages from flash messages -->
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.startswith('Loaded conversation:') %}
+                            <div class="message system-message">
+                                <strong>System:</strong> {{ message }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+        
+        <div class="chat-controls">
+            <form method="POST" action="{{ url_for('generate_recipe') }}" style="display: inline; margin-top: 10px;">
+                <button type="submit" class="btn btn-recipe">🍳 Generate Recipe</button>
+            </form>
+            
+            <form class="chat-form" method="POST" action="{{ url_for('chat') }}" autocomplete="off">
+                <input type="text" name="query" placeholder="Ask about recipes, cooking tips, or ingredients..." autocomplete="off" required>
+                <button type="submit">Send</button>
+            </form>
+            
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Enhanced typing animation and auto-scroll functionality
+    function showTypingIndicator() {
+        const chatMessages = document.getElementById('chatMessages');
+        const typingIndicator = document.createElement('div');
+        typingIndicator.className = 'message ai-message typing-indicator';
+        typingIndicator.innerHTML = `
+            <strong>iCook:</strong> 
+            <div class="typing-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        `;
+        typingIndicator.id = 'typing-indicator';
+        chatMessages.appendChild(typingIndicator);
+        
+        // Auto-scroll to show the typing indicator
+        setTimeout(() => {
+            typingIndicator.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }, 100);
+    }
+    
+    function hideTypingIndicator() {
+        const typingIndicator = document.getElementById('typing-indicator');
+        if (typingIndicator) {
+            typingIndicator.remove();
+        }
+    }
+    
+    // Add form submission handlers for typing indicators
+    document.addEventListener('DOMContentLoaded', function() {
+        const chatForm = document.querySelector('.chat-form');
+        const recipeForm = document.querySelector('form[action*="generate_recipe"]');
+        
+        if (chatForm) {
+            chatForm.addEventListener('submit', function(e) {
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalText = submitBtn.textContent;
+                
+                submitBtn.textContent = 'Thinking...';
+                submitBtn.disabled = true;
+                
+                showTypingIndicator();
+                
+                // Re-enable button if form submission fails
+                setTimeout(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                    hideTypingIndicator();
+                }, 30000); // 30 second timeout
+            });
+        }
+        
+        if (recipeForm) {
+            recipeForm.addEventListener('submit', function(e) {
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalText = submitBtn.textContent;
+                
+                submitBtn.innerHTML = '🍳 Creating Recipe...';
+                submitBtn.disabled = true;
+                
+                showTypingIndicator();
+                
+                // Re-enable button if form submission fails
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    hideTypingIndicator();
+                }, 30000); // 30 second timeout
+            });
+        }
+    });
+</script>
+{% endblock %}

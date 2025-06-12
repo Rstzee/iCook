@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Login - iCook{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin/admin.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="admin-login-container">
+    <div class="admin-login-form">
+        <div class="admin-header">
+            <h1 class="admin-title">🛡️ Admin Access</h1>
+            <p class="admin-subtitle">Secure Administrator Dashboard</p>
+        </div>
+        
+        {% if get_flashed_messages() %}
+        <div class="flash-messages">
+            {% for message in get_flashed_messages() %}
+            <div class="flash-message flash-error">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+          <form method="POST" class="admin-form" autocomplete="off">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" autocomplete="off" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" autocomplete="new-password" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">
+                🔓 Access Admin Dashboard
+            </button>
+        </form>
+        
+        <div class="security-notice">
+            <strong>🔒 Authorized Personnel Only</strong><br>
+            This area is restricted to system administrators
+        </div>
+        
+        <div class="back-link">
+            <a href="{{ url_for('landing_page') }}">← Back to iCook</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
