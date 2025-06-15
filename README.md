@@ -1,5 +1,5 @@
 # iCook - AI-Powered Recipe Application 🍳
-
+Access it ! https://icook.pythonanywhere.com/
 A Flask-based web application that provides AI-powered recipe suggestions and cooking assistance using advanced language models through OpenRouter API.
 
 ## 🌟 Features
